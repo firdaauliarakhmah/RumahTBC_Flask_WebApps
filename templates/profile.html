@@ -1,0 +1,102 @@
+{%extends "index.html"%} {%block content%}
+<main id="main" class="scrolled-offset">
+  <section>
+      <div class="row">
+          <div class="col-8 offset-2">
+              <div class="section-title">
+                  <h2>Profile Saya</h2>
+              </div>
+            <!-- Notifikasi Status -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ messages[0] }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endwith %}       
+              <div class="row">
+                  <div class="col-md-4">
+                      <!-- Tampilkan foto profil -->
+                        {% if user_profile.gambar is not none %}
+                            <img src="{{ url_for('static', filename='assets/gambar/profile/' + user_profile.gambar) }}" alt="User Profile Picture" class="img-thumbnail rounded mx-auto d-block">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='assets/gambar/profile/default.jpg') }}" alt="Default Profile Picture" class="img-thumbnail rounded mx-auto d-block">
+                        {% endif %}
+                  </div>
+                  <div class="col-md-8">
+                      <form method="POST" action="/update_profileuser" enctype="multipart/form-data">
+                          <div class="row mb-3">
+                              <label for="nama_lengkap" class="col-md-4 col-form-label text-md-end">Nama Lengkap</label>
+                              <div class="col-md-6">
+                                  <input id="nama_lengkap" type="text" class="form-control" name="nama_lengkap" value="{{ user_profile.nama_lengkap }}" required>
+                              </div>
+                          </div>
+                          <div class="row mb-3">
+                              <label for="nik" class="col-md-4 col-form-label text-md-end">NIK</label>
+                              <div class="col-md-6">
+                                  <input id="nik" type="number" class="form-control" name="nik" value="{{ user_profile.nik }}" required autofocus disabled>
+                              </div>
+                          </div>
+                          <div class="row mb-3">
+                              <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
+                              <div class="col-md-6">
+                                  <input id="email" type="email" class="form-control" name="email" value="{{ user_profile.email }}" required>
+                              </div>
+                          </div>
+                          <div class="row mb-3">
+                              <label for="no_hp" class="col-md-4 col-form-label text-md-end">No HP</label>
+                              <div class="col-md-6">
+                                  <input id="no_hp" type="number" class="form-control" name="no_hp" value="{{ user_profile.no_hp }}" required>
+                              </div>
+                          </div>
+                          <!-- Field Jenis Kelamin -->
+                          <div class="row mb-3">
+                              <label class="col-md-4 col-form-label text-md-end">Jenis Kelamin</label>
+                              <div class="col-md-6">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="lakilaki" value="lakilaki" {% if user_profile.jenis_kelamin == 'lakilaki' %}checked{% endif %}>
+                                      <label class="form-check-label" for="lakilaki">Laki-Laki</label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="jenis_kelamin" id="perempuan" value="perempuan" {% if user_profile.jenis_kelamin == 'perempuan' %}checked{% endif %}>
+                                      <label class="form-check-label" for="perempuan">Perempuan</label>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <!-- Field Tanggal Lahir -->
+                          <div class="row mb-3">
+                              <label for="tanggal_lahir" class="col-md-4 col-form-label text-md-end">Tanggal Lahir</label>
+                              <div class="col-md-6">                        <!-- Notifikasi Status -->
+                                  <input id="tanggal_lahir" type="date" class="form-control" name="tanggal_lahir" value="{{ user_profile.tanggal_lahir|default('') }}">
+                              </div>
+                          </div>
+                          <!-- Field Alamat -->
+                          <div class="row mb-3">
+                              <label for="alamat" class="col-md-4 col-form-label text-md-end">Alamat</label>
+                              <div class="col-md-6">
+                                  <textarea id="alamat" class="form-control" name="alamat" rows="3">{{ user_profile.alamat }}</textarea>
+                              </div>
+                          </div>
+                          <div class="row mb-3">
+                              <label for="gambar" class="col-md-4 col-form-label text-md-end">Change Photo</label>
+                              <div class="col-md-6">
+                                  <input id="gambar" type="file" class="form-control" name="gambar">
+                              </div>
+                          </div>
+                          <div class="row mb-0">
+                              <div class="col-md-6 offset-md-4">
+                                  <button type="submit" class="btn btn-success">Ubah Profile</button>
+                                  <!-- <a href="" class="btn btn-success">Ubah Password</a> -->
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+</main>
+
+{%endblock%}
